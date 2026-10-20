@@ -1,2 +1,11 @@
-# rpa-incident-analyzer
-An AI-powered REST API that analyzes RPA execution logs, identifies probable root causes, assigns severity, and recommends remediation actions.
+#Bot Monitoring Assistant
+AI-powered REST API for analyzing RPA execution logs.
+
+##Tech Stack
+- Java 21
+- Spring Boot
+- Maven
+- H2 Database
+- Status
+
+###Project initialization completed.
