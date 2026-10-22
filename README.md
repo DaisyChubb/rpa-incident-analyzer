@@ -1,11 +1,33 @@
-#Bot Monitoring Assistant
-AI-powered REST API for analyzing RPA execution logs.
+# AI Bot Monitoring Assistant
 
-##Tech Stack
+An AI-powered Spring Boot REST API that analyzes RPA execution logs, identifies probable root causes, assigns severity levels, and recommends remediation actions.
+
+## Features
+
+- Log ingestion
+- Root cause classification
+- AI-powered recommendations
+- Incident history
+- Failure statistics
+
+## Tech Stack
+
 - Java 21
 - Spring Boot
-- Maven
 - H2 Database
-- Status
+- OpenAI / Azure OpenAI
+- Swagger/OpenAPI
+- Docker
 
-###Project initialization completed.
+## Roadmap
+
+### MVP
+- [ ] Analyze logs
+- [ ] Classify incidents
+- [ ] Generate recommendations
+- [ ] Store analysis history
+
+### Future
+- [ ] Teams integration
+- [ ] Jira integration
+- [ ] Trend analysis
