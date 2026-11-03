@@ -2,10 +2,12 @@ package com.daisychubb.rpaincidentanalyzer.dto;
 
 import java.util.List;
 
+import com.daisychubb.rpaincidentanalyzer.model.ClassificationType;
+
 public class AnalysisResponse {
 	
 	private String status;
-	private String classification;
+	private ClassificationType classification;
 	private String severity;
 	private String summary;
 	private List<String> recommendations;
@@ -16,10 +18,10 @@ public class AnalysisResponse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getClassification() {
+	public ClassificationType getClassification() {
 		return classification;
 	}
-	public void setClassification(String classification) {
+	public void setClassification(ClassificationType classification) {
 		this.classification = classification;
 	}
 	public String getSeverity() {

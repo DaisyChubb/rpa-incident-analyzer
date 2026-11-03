@@ -9,25 +9,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisRequest;
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisResponse;
+import com.daisychubb.rpaincidentanalyzer.model.ClassificationType;
+import com.daisychubb.rpaincidentanalyzer.service.LogAnalysisService;
 
 @RestController
 @RequestMapping("/api/v1/logs")
 public class LogAnalysisController {
 	
+	private final LogAnalysisService logAnalysisService;
+	
+	public LogAnalysisController(LogAnalysisService logAnalysisService) {
+		this.logAnalysisService = logAnalysisService;
+	}
+	
 	@PostMapping("/analyze")
 	public AnalysisResponse analyze(@RequestBody AnalysisRequest request) {
 		
-		AnalysisResponse response = new AnalysisResponse();
+		ClassificationType classification = logAnalysisService.classify(request.getLogContent());
 		
-		//Hardcoded responses for now
+		AnalysisResponse response = new AnalysisResponse();
+
 		response.setStatus("FAILED");
-		response.setClassification("UI_CHANGE");
+		response.setClassification(classification);
 		response.setSeverity("MEDIUM");
-		response.setSummary("Incorrect field path");
+		response.setSummary("Rule-based classification completed.");
 		response.setRecommendations(
-				List.of("Validate Recorder selectors",
-						"Review SAP screen layout",
-						"Validate SAP environment"));
+				List.of("Review execution logs"));
 		
 		return response;
 	}
