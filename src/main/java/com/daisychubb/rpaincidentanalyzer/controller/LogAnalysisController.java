@@ -25,16 +25,7 @@ public class LogAnalysisController {
 	@PostMapping("/analyze")
 	public AnalysisResponse analyze(@RequestBody AnalysisRequest request) {
 		
-		ClassificationType classification = logAnalysisService.classify(request.getLogContent());
-		
-		AnalysisResponse response = new AnalysisResponse();
-
-		response.setStatus("FAILED");
-		response.setClassification(classification);
-		response.setSeverity("MEDIUM");
-		response.setSummary("Rule-based classification completed.");
-		response.setRecommendations(
-				List.of("Review execution logs"));
+		AnalysisResponse response = logAnalysisService.classify(request.getLogContent());
 		
 		return response;
 	}
