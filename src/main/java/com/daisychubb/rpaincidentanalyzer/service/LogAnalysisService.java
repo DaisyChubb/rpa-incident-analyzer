@@ -1,18 +1,28 @@
 package com.daisychubb.rpaincidentanalyzer.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.daisychubb.rpaincidentanalyzer.dto.AnalysisRequest;
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisResponse;
+import com.daisychubb.rpaincidentanalyzer.entity.Analysis;
 import com.daisychubb.rpaincidentanalyzer.model.ClassificationType;
+import com.daisychubb.rpaincidentanalyzer.repository.AnalysisRepository;
 
 @Service
 public class LogAnalysisService {
+	
+	private final AnalysisRepository analysisRepository;
+	
+	public LogAnalysisService(AnalysisRepository analysisRepository) {
+		this.analysisRepository = analysisRepository;
+	}
 
-	public AnalysisResponse classify(String logContent) {
+	public AnalysisResponse classify(AnalysisRequest request) {
 		
-		String log = logContent.toLowerCase();
+		String log = request.getLogContent().toLowerCase();
 		AnalysisResponse response = new AnalysisResponse();
 		ClassificationType classification = ClassificationType.UNKNOWN;
 		
@@ -51,6 +61,7 @@ public class LogAnalysisService {
 						"Review version of KeePass",
 						"Check credential expiration",
 						"Escalate to application support team"));
+				break;
 				
 			case TIMEOUT:
 				response.setSeverity("MEDIUM");
@@ -60,6 +71,7 @@ public class LogAnalysisService {
 						"Increase timeout threshold in AA",
 						"Check network connectivity",
 						"Investigate performance bottlenecks"));
+				break;
 				
 			case SYSTEM_UNAVAILABLE:
 				response.setSeverity("HIGH");
@@ -69,6 +81,7 @@ public class LogAnalysisService {
 						"Review health check and monitoring dashboard",
 						"Review recent outage communication or maintenance windows",
 						"Escalate to application support team"));
+				break;
 				
 			default:
 				response.setSeverity("LOW");
@@ -78,7 +91,19 @@ public class LogAnalysisService {
 						"Gather additional diagnositic information",
 						"Review PDD and compare with UC in the code",
 						"Update classification rules if neccessary"));
+				break;
 		}
+		
+		//Save response to database
+		Analysis analysis = new Analysis();
+		
+		analysis.setBotName(request.getBotName());
+		analysis.setClassification(classification.name());
+		analysis.setSeverity(response.getSeverity());
+		analysis.setSummary(response.getSummary());
+		analysis.setAnalyzedAt(LocalDateTime.now());
+		
+		analysisRepository.save(analysis);
 		
 		return response;
 	}
