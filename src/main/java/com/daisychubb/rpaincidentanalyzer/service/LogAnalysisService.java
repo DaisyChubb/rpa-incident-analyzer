@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisRequest;
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisResponse;
+import com.daisychubb.rpaincidentanalyzer.dto.AnalysisStatsResponse;
 import com.daisychubb.rpaincidentanalyzer.entity.Analysis;
 import com.daisychubb.rpaincidentanalyzer.model.ClassificationType;
 import com.daisychubb.rpaincidentanalyzer.repository.AnalysisRepository;
@@ -106,5 +107,26 @@ public class LogAnalysisService {
 		analysisRepository.save(analysis);
 		
 		return response;
+	}
+	
+	public AnalysisStatsResponse getStatistics() {
+		
+		AnalysisStatsResponse stats = new AnalysisStatsResponse();
+		
+		stats.setTotalAnalyses(analysisRepository.count());
+		
+		stats.setCredentialIssues(analysisRepository.countByClassification(ClassificationType.CREDENTIAL_ISSUE.name()));
+		stats.setSystemUnavailable(analysisRepository.countByClassification(ClassificationType.SYSTEM_UNAVAILABLE.name()));
+		stats.setTimeouts(analysisRepository.countByClassification(ClassificationType.TIMEOUT.name()));
+		stats.setUiChanges(analysisRepository.countByClassification(ClassificationType.UI_CHANGE.name()));
+		stats.setUnknown(analysisRepository.countByClassification(ClassificationType.UNKNOWN.name()));
+		
+		return stats;
+	}
+	
+	public long getStatsByBot(String botName) {
+		
+		return analysisRepository.countByBotName(botName);
+		
 	}
 }

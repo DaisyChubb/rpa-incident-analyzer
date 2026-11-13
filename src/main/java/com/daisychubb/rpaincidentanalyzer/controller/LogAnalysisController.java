@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisRequest;
 import com.daisychubb.rpaincidentanalyzer.dto.AnalysisResponse;
+import com.daisychubb.rpaincidentanalyzer.dto.AnalysisStatsResponse;
 import com.daisychubb.rpaincidentanalyzer.entity.Analysis;
 import com.daisychubb.rpaincidentanalyzer.repository.AnalysisRepository;
 import com.daisychubb.rpaincidentanalyzer.service.LogAnalysisService;
@@ -38,4 +39,11 @@ public class LogAnalysisController {
 	public List<Analysis> getHistory() {
 		return analysisRepository.findAll();
 	}
+	
+	@GetMapping("/stats")
+	public AnalysisStatsResponse getStats() {
+		return logAnalysisService.getStatistics();
+	}
+	
+	//TODO: Expose endpoint to get stats by Bot Name
 }
